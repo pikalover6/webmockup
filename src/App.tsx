@@ -3,6 +3,10 @@ import Wordmark from "./Wordmark";
 
 type Item = { label: string; href: string; children?: { label: string; href: string }[] };
 
+// This mockup only covers the home page; page links go to the live lab site.
+const SITE = "https://pages.uoregon.edu/libudalab/";
+const resolve = (href: string) => (href.startsWith("#") || href.includes("://") ? href : SITE + href);
+
 const NAV: Item[] = [
   { label: "Home", href: "#" },
   { label: "Research", href: "research.html" },
@@ -86,7 +90,7 @@ export default function App() {
         {NAV.map((item, i) => (
           <div key={item.label} className={"nav-item" + (i === 0 ? " active" : "") + (open === item.label ? " open" : "")}>
             <a
-              href={item.href}
+              href={resolve(item.href)}
               aria-expanded={item.children ? open === item.label : undefined}
               onClick={(e) => {
                 // on touch layouts the parent link toggles its list instead of navigating
@@ -102,7 +106,7 @@ export default function App() {
             {item.children && (
               <div className="menu">
                 {item.children.map((c) => (
-                  <a key={c.label} href={c.href}>
+                  <a key={c.label} href={resolve(c.href)}>
                     {c.label}
                   </a>
                 ))}
